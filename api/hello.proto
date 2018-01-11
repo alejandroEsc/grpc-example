@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package hello;
 
-service HelloService {
+service Hello {
 
     /**
     * Determines if you knocked the door and the appropriate
-    * reply if you didnt.
+    * reply if you didn't.
     */
-    rpc GetHello(Knock) returns (Reply){}
+    rpc Knocked(Knock) returns (Reply){}
 
 }
 
@@ -17,7 +17,7 @@ service HelloService {
 */
 message Knock {
     reserved 2;
-    bool knockDoor = 1; // do you or not knock on the door
+    bool knocked = 1; // do you or not knock on the door
 }
 
 /**
@@ -26,5 +26,5 @@ message Knock {
 message Reply {
     reserved 3;
     bool reply = 1; // do you or not reply to a knock.
-    string replyMessage = 2; // what your reply to a knock should be.
+    string Message = 2; // what your reply to a knock should be.
 }
