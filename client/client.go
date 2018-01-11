@@ -17,42 +17,42 @@ var (
 	)
 )
 
-func runDoKnock(client a.HelloServiceClient) error {
-	k := a.Knock{KnockDoor: true}
+func runDoKnock(client a.HelloClient) error {
+	k := a.Knock{Knocked: true}
 	log.Print("knocking the door")
 
-	r, err := client.GetHello(context.Background(), &k)
+	r, err := client.Knocked(context.Background(), &k)
 
 	if err != nil {
 		return err
 	}
 
-	log.Printf("knocked the door, got a reply: %s", r.ReplyMessage)
+	log.Printf("knocked the door, got a reply: %s", r.Message)
 	return nil
 }
 
-func runDoNotKnock(client a.HelloServiceClient) error {
-	k := a.Knock{KnockDoor: false}
+func runDoNotKnock(client a.HelloClient) error {
+	k := a.Knock{Knocked: false}
 	log.Print("NOT knocking the door")
 
-	r, err := client.GetHello(context.Background(), &k)
+	r, err := client.Knocked(context.Background(), &k)
 	if err != nil {
 		return err
 	}
 
-	log.Printf("Standing in front of the door, got a message?: %s", r.ReplyMessage)
+	log.Printf("Standing in front of the door, got a message?: %s", r.Message)
 	return nil
 }
 
-func runNoMessage(client a.HelloServiceClient) error {
+func runNoMessage(client a.HelloClient) error {
 	log.Print("sending nil message")
 
-	r, err := client.GetHello(context.Background(), nil)
+	r, err := client.Knocked(context.Background(), nil)
 	if err != nil {
 		return err
 	}
 
-	log.Printf("no message sent, and got a reply: %s", r.ReplyMessage)
+	log.Printf("no message sent, and got a reply: %s", r.Message)
 	return nil
 
 }
@@ -74,7 +74,7 @@ func main() {
 		}
 	}()
 
-	client := a.NewHelloServiceClient(conn)
+	client := a.NewHelloClient(conn)
 
 	err = runDoKnock(client)
 	if err != nil {

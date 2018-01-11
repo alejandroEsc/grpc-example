@@ -31,17 +31,17 @@ type doorServer struct {
 }
 
 // Implemented the server interface
-func (s *doorServer) GetHello(c context.Context, k *a.Knock) (*a.Reply, error) {
+func (s *doorServer) Knocked(c context.Context, k *a.Knock) (*a.Reply, error) {
 
 	if k == nil {
 		return nil, fmt.Errorf("nothing received, wont respond")
 	}
 
-	r := a.Reply{Reply: false, ReplyMessage: s.knockFailureMsg}
+	r := a.Reply{Reply: false, Message: s.knockFailureMsg}
 
-	if k.KnockDoor {
+	if k.Knocked {
 		r.Reply = true
-		r.ReplyMessage = "Hello!"
+		r.Message = "Hello!"
 	}
 
 	return &r, nil
@@ -66,7 +66,7 @@ func main() {
 	var opts []grpc.ServerOption
 
 	grpcServer := grpc.NewServer(opts...)
-	a.RegisterHelloServiceServer(grpcServer, newDoorServer(*knockFailure))
+	a.RegisterHelloServer(grpcServer, newDoorServer(*knockFailure))
 
 	log.Printf("attempting to start server in port %d", *port)
 
