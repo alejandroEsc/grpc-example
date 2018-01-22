@@ -1,6 +1,9 @@
 syntax = "proto3";
-
 package hello;
+
+// additional imports for restulf-gateway code
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
 
 service HelloService {
 
@@ -8,7 +11,12 @@ service HelloService {
     * Determines if you knocked the door and the appropriate
     * reply if you didnt.
     */
-    rpc GetHello(Knock) returns (Reply){}
+    rpc GetHello(Knock) returns (Reply){
+        option (google.api.http) = {
+            post: "/v1/door/knock/{knockDoor}"
+            body: "*"
+        };
+    }
 
 }
 
@@ -16,6 +24,13 @@ service HelloService {
 * Knock the door or not
 */
 message Knock {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		external_docs: {
+			url: "https://github.com/alejandroEsc/grpc-example";
+            description: "Defines whether you have knocked or not the door";
+        }
+    };
+
     reserved 2;
     bool knockDoor = 1; // do you or not knock on the door
 }
@@ -24,6 +39,13 @@ message Knock {
 * Reply based on whether a door was knocked or not.
 */
 message Reply {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		external_docs: {
+			url: "https://github.com/alejandroEsc/grpc-example";
+            description: "Defines the reply from knocking the door";
+        }
+    };
+
     reserved 3;
     bool reply = 1; // do you or not reply to a knock.
     string replyMessage = 2; // what your reply to a knock should be.

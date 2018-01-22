@@ -48,3 +48,122 @@ where what the above comes from is
 ```
 protoc --doc_out <output_folder> --doc_opt=<format, file_output> <api_proto_input_files>
 ```
+# REST Gateway
+
+* generate gRPC go stub
+```
+protoc -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --go_out=plugins=grpc:api
+```
+
+* generate gateway got stub
+```
+protoc -I /usr/local/include/ -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --grpc-gateway_out=logtostderr=true:api
+```
+
+* swagger output
+```
+protoc -I /usr/local/include/ -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --swagger_out=logtostderr=true:swagger
+```
+
+## Example API calls
+
+* get swagger docs
+```
+curl http://localhost:8502/swagger/hello.swagger.json
+
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "hello.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/door": {
+      "post": {
+        "summary": "*\nDetermines if you knocked the door and the appropriate\nreply if you didnt.",
+        "operationId": "GetHello",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/helloReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helloKnock"
+            }
+          }
+        ],
+        "tags": [
+          "HelloService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "helloKnock": {
+      "type": "object",
+      "properties": {
+        "knockDoor": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "*\nKnock the door or not",
+      "externalDocs": {
+        "description": "Find out more about this grpc example",
+        "url": "https://github.com/alejandroEsc/grpc-example"
+      }
+    },
+    "helloReply": {
+      "type": "object",
+      "properties": {
+        "reply": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "replyMessage": {
+          "type": "string"
+        }
+      },
+      "description": "*\nReply based on whether a door was knocked or not."
+    }
+  }
+}
+```
+
+* knock the door
+```
+curl -X POST http://localhost:8502/v1/door/knock/true
+
+{"reply":true,"replyMessage":"Hello!"}
+```
+
+* do not knock the door
+```
+curl -X POST http://localhost:8502/v1/door/knock/false
+{"replyMessage":"You should try and knock"}
+```
+
+* failure case
+
+```
+ curl -X POST http://localhost:8502/v1/door/knock/
+{"error":"type mismatch, parameter: knockDoor, error: strconv.ParseBool: parsing \"\": invalid syntax","code":3}
+```

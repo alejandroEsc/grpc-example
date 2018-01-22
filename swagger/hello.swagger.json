@@ -1,0 +1,86 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "hello.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/door/knock/{knockDoor}": {
+      "post": {
+        "summary": "*\nDetermines if you knocked the door and the appropriate\nreply if you didnt.",
+        "operationId": "GetHello",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/helloReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "knockDoor",
+            "in": "path",
+            "required": true,
+            "type": "boolean",
+            "format": "boolean"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/helloKnock"
+            }
+          }
+        ],
+        "tags": [
+          "HelloService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "helloKnock": {
+      "type": "object",
+      "properties": {
+        "knockDoor": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "*\nKnock the door or not",
+      "externalDocs": {
+        "description": "Defines whether you have knocked or not the door",
+        "url": "https://github.com/alejandroEsc/grpc-example"
+      }
+    },
+    "helloReply": {
+      "type": "object",
+      "properties": {
+        "reply": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "replyMessage": {
+          "type": "string"
+        }
+      },
+      "description": "*\nReply based on whether a door was knocked or not.",
+      "externalDocs": {
+        "description": "Defines the reply from knocking the door",
+        "url": "https://github.com/alejandroEsc/grpc-example"
+      }
+    }
+  }
+}
