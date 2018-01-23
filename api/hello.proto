@@ -6,7 +6,6 @@ import "google/api/annotations.proto";
 import "protoc-gen-swagger/options/annotations.proto";
 
 service HelloService {
-
     /**
     * Determines if you knocked the door and the appropriate
     * reply if you didnt.
@@ -17,7 +16,6 @@ service HelloService {
             body: "*"
         };
     }
-
 }
 
 /**
