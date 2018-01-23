@@ -55,7 +55,7 @@ protoc --doc_out <output_folder> --doc_opt=<format, file_output> <api_proto_inpu
 protoc -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --go_out=plugins=grpc:api
 ```
 
-* generate gateway got stub
+* generate gateway go stub
 ```
 protoc -I /usr/local/include/ -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --grpc-gateway_out=logtostderr=true:api
 ```

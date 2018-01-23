@@ -2,17 +2,13 @@ package client
 
 
 import (
-    "flag"
     "log"
 
     a "github.com/alejandroEsc/grpc-example/api"
+    c "github.com/alejandroEsc/grpc-example/configs"
     "google.golang.org/grpc"
     "context"
-)
-
-
-var (
-    serverAddr = flag.String("server_addr", "127.0.0.1:8501", "The server address in the format of host:port")
+    "fmt"
 )
 
 func runDoKnock(client a.HelloServiceClient) error {
@@ -57,12 +53,14 @@ func runNoMessage(client a.HelloServiceClient) error {
 
 func main() {
     var err error
-    flag.Parse()
+    c.InitEnvVars()
+    port, _, address := c.ParseEnvVars()
+
     var opts []grpc.DialOption
 
     opts = append(opts, grpc.WithInsecure())
 
-    conn, err := grpc.Dial(*serverAddr, opts...)
+    conn, err := grpc.Dial(fmt.Sprintf("%s:%d", address, port), opts...)
     if err != nil {
         log.Fatalf("fail to dial: %v", err)
     }
