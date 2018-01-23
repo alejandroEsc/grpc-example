@@ -1,83 +1,86 @@
 package configs
 
-import(
-    "github.com/spf13/viper"
+import (
+	"github.com/spf13/viper"
 )
-
 
 var (
-    envPrefix                     = "grpc_hello"
-    envServiceAddress             = "service_address"
-    envServicePort                = "service_port"
-    envServiceKnockFailure        = "service_knock_failure"
-    envGateWayServiceAddress      = "gw_service_address"
-    envGateWayPort                = "gw_port"
-    envGateWaySwaggerDir          = "gw_swagger_dir"
-    addressDefault                = "localhost"
-    portDefault                   = 8501
-    gwAddressDefault              = "localhost"
-    gwPortDefault                 = 8502
-    knockFailureDefault           = "You should try and knock"
-    gwSwaggerDirDefault           = "swagger"
+	envPrefix                = "grpc_hello"
+	envServiceAddress        = "service_address"
+	envServicePort           = "service_port"
+	envServiceKnockFailure   = "service_knock_failure"
+	envGateWayServiceAddress = "gw_service_address"
+	envGateWayPort           = "gw_port"
+	envGateWaySwaggerDir     = "gw_swagger_dir"
+	addressDefault           = "localhost"
+	portDefault              = 8501
+	gwAddressDefault         = "localhost"
+	gwPortDefault            = 8502
+	knockFailureDefault      = "You should try and knock"
+	gwSwaggerDirDefault      = "swagger"
 )
 
+// InitEnvVars allows you to initiate gathering environment variables
 func InitEnvVars() {
-    viper.SetEnvPrefix(envPrefix)
-    viper.BindEnv(envServicePort)
-    viper.BindEnv(envServiceKnockFailure)
-    viper.BindEnv(envServiceAddress)
-    viper.BindEnv(envGateWayServiceAddress)
-    viper.BindEnv(envGateWayPort)
-    viper.BindEnv(envGateWaySwaggerDir)
+	viper.SetEnvPrefix(envPrefix)
+	viper.BindEnv(envServicePort)
+	viper.BindEnv(envServiceKnockFailure)
+	viper.BindEnv(envServiceAddress)
+	viper.BindEnv(envGateWayServiceAddress)
+	viper.BindEnv(envGateWayPort)
+	viper.BindEnv(envGateWaySwaggerDir)
 }
 
+// ParseEnvVars allows you to parse variables consumed by the grpc service
 func ParseEnvVars() (int, string, string) {
-    port := viper.GetInt(envServicePort);
-    if port == 0 {
-        port = portDefault
-    }
+	port := viper.GetInt(envServicePort)
+	if port == 0 {
+		port = portDefault
+	}
 
-    knockFailure := viper.GetString(envServiceKnockFailure)
-    if knockFailure == "" {
-        knockFailure = knockFailureDefault
-    }
+	knockFailure := viper.GetString(envServiceKnockFailure)
+	if knockFailure == "" {
+		knockFailure = knockFailureDefault
+	}
 
-    serviceAddress := viper.GetString(envServiceAddress)
-    if serviceAddress == "" {
-        serviceAddress = addressDefault
-    }
+	serviceAddress := viper.GetString(envServiceAddress)
+	if serviceAddress == "" {
+		serviceAddress = addressDefault
+	}
 
-    return port, knockFailure, serviceAddress
+	return port, knockFailure, serviceAddress
 }
 
+// ParseGWSwaggerEnvVars parses environment variables consumed by swagger server
 func ParseGWSwaggerEnvVars() string {
-    gwSwaggerDir := viper.GetString(envGateWaySwaggerDir)
-    if gwSwaggerDirDefault == "" {
-        gwSwaggerDirDefault = gwSwaggerDirDefault
-    }
-    return gwSwaggerDir
+	gwSwaggerDir := viper.GetString(envGateWaySwaggerDir)
+	if gwSwaggerDir == "" {
+		gwSwaggerDir = gwSwaggerDirDefault
+	}
+	return gwSwaggerDir
 }
 
+// ParseGateWayEnvVars parses environment variables consumed by the gateway service
 func ParseGateWayEnvVars() (int, int, string, string) {
-    gwPort := viper.GetInt(envGateWayPort);
-    if gwPort == 0 {
-        gwPort = gwPortDefault
-    }
+	gwPort := viper.GetInt(envGateWayPort)
+	if gwPort == 0 {
+		gwPort = gwPortDefault
+	}
 
-    port := viper.GetInt(envServicePort);
-    if port == 0 {
-        port = portDefault
-    }
+	port := viper.GetInt(envServicePort)
+	if port == 0 {
+		port = portDefault
+	}
 
-    gwServiceAddress := viper.GetString(envGateWayServiceAddress)
-    if gwServiceAddress == "" {
-        gwServiceAddress = gwAddressDefault
-    }
+	gwServiceAddress := viper.GetString(envGateWayServiceAddress)
+	if gwServiceAddress == "" {
+		gwServiceAddress = gwAddressDefault
+	}
 
-    serviceAddress := viper.GetString(envServiceAddress)
-    if serviceAddress == "" {
-        serviceAddress = addressDefault
-    }
+	serviceAddress := viper.GetString(envServiceAddress)
+	if serviceAddress == "" {
+		serviceAddress = addressDefault
+	}
 
-    return gwPort, port, gwServiceAddress, serviceAddress
+	return gwPort, port, gwServiceAddress, serviceAddress
 }

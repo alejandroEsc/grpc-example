@@ -22,12 +22,12 @@ service HelloService {
 * Knock the door or not
 */
 message Knock {
-    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
-		external_docs: {
-			url: "https://github.com/alejandroEsc/grpc-example";
-            description: "Defines whether you have knocked or not the door";
-        }
-    };
+//    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+//		external_docs: {
+//			url: "https://github.com/alejandroEsc/grpc-example";
+//            description: "Defines whether you have knocked or not the door";
+//        }
+//    };
 
     reserved 2;
     bool knockDoor = 1; // do you or not knock on the door
@@ -37,12 +37,12 @@ message Knock {
 * Reply based on whether a door was knocked or not.
 */
 message Reply {
-    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
-		external_docs: {
-			url: "https://github.com/alejandroEsc/grpc-example";
-            description: "Defines the reply from knocking the door";
-        }
-    };
+//    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+//		external_docs: {
+//			url: "https://github.com/alejandroEsc/grpc-example";
+//            description: "Defines the reply from knocking the door";
+//        }
+//    };
 
     reserved 3;
     bool reply = 1; // do you or not reply to a knock.

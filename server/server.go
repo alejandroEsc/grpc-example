@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"log"
 	"net"
-    "os"
-    "os/signal"
-    "syscall"
-    "time"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	a "github.com/alejandroEsc/grpc-example/api"
 	c "github.com/alejandroEsc/grpc-example/configs"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
-
 
 type doorServer struct {
 	knockFailureMsg string
@@ -24,7 +23,7 @@ type doorServer struct {
 func (s *doorServer) GetHello(c context.Context, knock *a.Knock) (*a.Reply, error) {
 
 	if knock == nil {
-		return nil, fmt.Errorf("nothing received, wont respond.")
+		return nil, fmt.Errorf("nothing received, wont respond")
 	}
 
 	r := a.Reply{Reply: false, ReplyMessage: s.knockFailureMsg}
@@ -42,10 +41,9 @@ func newDoorServer(noKnockMsg string) *doorServer {
 	return &d
 }
 
-
 func main() {
-    var err error
-    log.Print("starting server")
+	var err error
+	log.Print("starting server")
 
 	c.InitEnvVars()
 	port, knockFailure, address := c.ParseEnvVars()
@@ -60,30 +58,27 @@ func main() {
 	grpcServer := grpc.NewServer(opts...)
 	a.RegisterHelloServiceServer(grpcServer, newDoorServer(knockFailure))
 
-    log.Printf("attempting to start server in port %d", port)
+	log.Printf("attempting to start server in port %d", port)
 
-    //  Get notified that server is being asked to stop
-    // Handle SIGINT and SIGTERM.
-    gracefulStop := make(chan os.Signal)
-    signal.Notify(gracefulStop, syscall.SIGINT, syscall.SIGTERM)
+	//  Get notified that server is being asked to stop
+	// Handle SIGINT and SIGTERM.
+	gracefulStop := make(chan os.Signal)
+	signal.Notify(gracefulStop, syscall.SIGINT, syscall.SIGTERM)
 
-    // Chance here to gracefully handle being stopped.
-    go func() {
-        sig := <-gracefulStop
-        log.Printf("caught sig: %+v", sig)
-        log.Println("Wait for 2 second to finish processing")
-        time.Sleep(2*time.Second)
-        grpcServer.Stop()
-        log.Print("service terminated")
-        os.Exit(0)
-    }()
+	// Chance here to gracefully handle being stopped.
+	go func() {
+		sig := <-gracefulStop
+		log.Printf("caught sig: %+v", sig)
+		log.Println("Wait for 2 second to finish processing")
+		time.Sleep(2 * time.Second)
+		grpcServer.Stop()
+		log.Print("service terminated")
+		os.Exit(0)
+	}()
 
-    err = grpcServer.Serve(listener)
+	err = grpcServer.Serve(listener)
 
-    if err != nil {
-        log.Fatalf("could not start service: ", err)
-    }
-
+	if err != nil {
+		log.Fatalf("could not start service: %s", err)
+	}
 }
-
-

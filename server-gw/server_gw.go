@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-    "os"
-    "os/signal"
+	"os"
+	"os/signal"
 	"path"
 	"strings"
-    "syscall"
-    "time"
+	"syscall"
+	"time"
 
 	a "github.com/alejandroEsc/grpc-example/api"
 	c "github.com/alejandroEsc/grpc-example/configs"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 func serveSwagger(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +45,6 @@ func run() error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/swagger/", serveSwagger)
 
-
 	muxGateway := runtime.NewServeMux()
 
 	opts := []grpc.DialOption{grpc.WithInsecure()}
@@ -55,7 +54,6 @@ func run() error {
 	}
 
 	mux.Handle("/", muxGateway)
-
 
 	//  Get notified that server is being asked to stop
 	// Handle SIGINT and SIGTERM.
@@ -67,7 +65,7 @@ func run() error {
 		sig := <-gracefulStop
 		log.Printf("caught sig: %+v", sig)
 		log.Println("Wait for 2 second to finish processing")
-		time.Sleep(2*time.Second)
+		time.Sleep(2 * time.Second)
 		cancel()
 		log.Print("service terminated")
 		os.Exit(0)
@@ -77,13 +75,11 @@ func run() error {
 }
 
 func main() {
-    var err error
-    log.Print("starting server")
+	var err error
+	log.Print("starting server")
 	c.InitEnvVars()
 
 	if err = run(); err != nil {
 		log.Fatal(err)
 	}
 }
-
-
