@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,22 +11,12 @@ import (
     "syscall"
     "time"
 
-	gw "github.com/alejandroEsc/grpc-example/api"
+	a "github.com/alejandroEsc/grpc-example/api"
+	c "github.com/alejandroEsc/grpc-example/configs"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
-
-var (
-	port         = flag.Int("port", 8502, "Server port.")
-	grpcEndpoint = flag.String("echo_endpoint", "localhost:8501", "endpoint of Hello Service")
-	swaggerDir = flag.String("swagger-dir", "swagger", "path to the directory which contains swagger definitions")
-
-)
-
-type doorServer struct {
-	knockFailureMsg string
-}
 
 func serveSwagger(w http.ResponseWriter, r *http.Request) {
 	log.Printf("call to find swagger resource.... %s", r.URL.Path)
@@ -37,9 +26,11 @@ func serveSwagger(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	gwSwaggerDir := c.ParseGWSwaggerEnvVars()
+
 	log.Printf("Serving %s", r.URL.Path)
 	p := strings.TrimPrefix(r.URL.Path, "/swagger/")
-	p = path.Join(*swaggerDir, p)
+	p = path.Join(gwSwaggerDir, p)
 	http.ServeFile(w, r, p)
 }
 
@@ -48,6 +39,9 @@ func run() error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	gwPort, port, gwAddress, address := c.ParseGateWayEnvVars()
+	grpcEndpoint := fmt.Sprintf("%s:%d", address, port)
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/swagger/", serveSwagger)
 
@@ -55,7 +49,7 @@ func run() error {
 	muxGateway := runtime.NewServeMux()
 
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := gw.RegisterHelloServiceHandlerFromEndpoint(ctx, muxGateway, *grpcEndpoint, opts)
+	err := a.RegisterHelloServiceHandlerFromEndpoint(ctx, muxGateway, grpcEndpoint, opts)
 	if err != nil {
 		return err
 	}
@@ -79,17 +73,13 @@ func run() error {
 		os.Exit(0)
 	}()
 
-
-
-	return http.ListenAndServe(fmt.Sprintf("localhost:%d", *port), mux)
+	return http.ListenAndServe(fmt.Sprintf("%s:%d", gwAddress, gwPort), mux)
 }
 
 func main() {
     var err error
     log.Print("starting server")
-
-    // Parse arguments here
-	flag.Parse()
+	c.InitEnvVars()
 
 	if err = run(); err != nil {
 		log.Fatal(err)

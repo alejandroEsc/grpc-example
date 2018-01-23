@@ -167,3 +167,22 @@ curl -X POST http://localhost:8502/v1/door/knock/false
  curl -X POST http://localhost:8502/v1/door/knock/
 {"error":"type mismatch, parameter: knockDoor, error: strconv.ParseBool: parsing \"\": invalid syntax","code":3}
 ```
+
+# Dependencies
+installing golang/dep
+```
+go get -u github.com/golang/dep/cmd/dep
+```
+
+the run `dep init`
+
+## Visualize Dependencies
+install visualization tool, e.g., os-x:
+```
+brew install graphviz
+```
+
+and then run 
+```
+dep status -dot | dot -T png | open -f -a /Applications/Preview.app
+```

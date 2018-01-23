@@ -1,7 +1,6 @@
-package server
+package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -11,14 +10,11 @@ import (
     "time"
 
 	a "github.com/alejandroEsc/grpc-example/api"
+	c "github.com/alejandroEsc/grpc-example/configs"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
-var (
-	port         = flag.Int("port", 8501, "Server port.")
-	knockFailure = flag.String("no-knock-message", "You should try and knock", "Failed to knock message.")
-)
 
 type doorServer struct {
 	knockFailureMsg string
@@ -46,14 +42,15 @@ func newDoorServer(noKnockMsg string) *doorServer {
 	return &d
 }
 
+
 func main() {
     var err error
     log.Print("starting server")
 
-    // Parse arguments here
-	flag.Parse()
+	c.InitEnvVars()
+	port, knockFailure, address := c.ParseEnvVars()
 
-	listener, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
+	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", address, port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -61,9 +58,9 @@ func main() {
 	var opts []grpc.ServerOption
 
 	grpcServer := grpc.NewServer(opts...)
-	a.RegisterHelloServiceServer(grpcServer, newDoorServer(*knockFailure))
+	a.RegisterHelloServiceServer(grpcServer, newDoorServer(knockFailure))
 
-    log.Printf("attempting to start server in port %d", *port)
+    log.Printf("attempting to start server in port %d", port)
 
     //  Get notified that server is being asked to stop
     // Handle SIGINT and SIGTERM.

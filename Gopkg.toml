@@ -19,6 +19,7 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+required = ["golang.org/x/crypto/ssh"]
 
 [[constraint]]
   branch = "master"
@@ -39,3 +40,7 @@
 [[constraint]]
   name = "google.golang.org/grpc"
   version = "1.9.2"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/crypto"
