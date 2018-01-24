@@ -1,3 +1,5 @@
+// annotations needed for the rest gateway are getting in the way of updating this. Need
+// to figure out a solution.
 
 // Do knock a door
 console.log("sending message: {knockDoor:true}")
