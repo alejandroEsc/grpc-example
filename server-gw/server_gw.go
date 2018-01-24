@@ -77,7 +77,11 @@ func run() error {
 func main() {
 	var err error
 	log.Print("starting server")
-	c.InitEnvVars()
+
+	err = c.InitEnvVars()
+	if err != nil {
+		log.Fatalf("failed to init config vars: %s", err)
+	}
 
 	if err = run(); err != nil {
 		log.Fatal(err)

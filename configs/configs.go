@@ -21,14 +21,41 @@ var (
 )
 
 // InitEnvVars allows you to initiate gathering environment variables
-func InitEnvVars() {
+func InitEnvVars() error {
+	var err error
 	viper.SetEnvPrefix(envPrefix)
-	viper.BindEnv(envServicePort)
-	viper.BindEnv(envServiceKnockFailure)
-	viper.BindEnv(envServiceAddress)
-	viper.BindEnv(envGateWayServiceAddress)
-	viper.BindEnv(envGateWayPort)
-	viper.BindEnv(envGateWaySwaggerDir)
+
+	err = viper.BindEnv(envServicePort)
+	if err != nil {
+		return err
+	}
+
+	err = viper.BindEnv(envServiceKnockFailure)
+	if err != nil {
+		return err
+	}
+
+	err = viper.BindEnv(envServiceAddress)
+	if err != nil {
+		return err
+	}
+
+	err = viper.BindEnv(envGateWayServiceAddress)
+	if err != nil {
+		return err
+	}
+
+	err = viper.BindEnv(envGateWayPort)
+	if err != nil {
+		return err
+	}
+
+	err = viper.BindEnv(envGateWaySwaggerDir)
+	if err != nil {
+		return err
+	}
+
+	return err
 }
 
 // ParseEnvVars allows you to parse variables consumed by the grpc service

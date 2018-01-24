@@ -52,7 +52,11 @@ func runNoMessage(client a.HelloServiceClient) error {
 
 func main() {
 	var err error
-	c.InitEnvVars()
+	err = c.InitEnvVars()
+	if err != nil {
+		log.Fatalf("failed to init config vars: %s", err)
+	}
+
 	port, _, address := c.ParseEnvVars()
 
 	var opts []grpc.DialOption

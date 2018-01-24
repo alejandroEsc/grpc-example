@@ -59,11 +59,7 @@
           "format": "boolean"
         }
       },
-      "title": "*\nKnock the door or not",
-      "externalDocs": {
-        "description": "Defines whether you have knocked or not the door",
-        "url": "https://github.com/alejandroEsc/grpc-example"
-      }
+      "title": "*\nKnock the door or not"
     },
     "helloReply": {
       "type": "object",
@@ -76,11 +72,7 @@
           "type": "string"
         }
       },
-      "description": "*\nReply based on whether a door was knocked or not.",
-      "externalDocs": {
-        "description": "Defines the reply from knocking the door",
-        "url": "https://github.com/alejandroEsc/grpc-example"
-      }
+      "description": "*\nReply based on whether a door was knocked or not."
     }
   }
 }

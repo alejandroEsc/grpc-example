@@ -52,17 +52,17 @@ protoc --doc_out <output_folder> --doc_opt=<format, file_output> <api_proto_inpu
 
 * generate gRPC go stub
 ```
-protoc -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --go_out=plugins=grpc:api
+protoc -I api/ api/hello.proto -I vendor/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I vendor/github.com/grpc-ecosystem/grpc-gateway --go_out=plugins=grpc:api
 ```
 
 * generate gateway go stub
 ```
-protoc -I /usr/local/include/ -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --grpc-gateway_out=logtostderr=true:api
+protoc -I /usr/local/include/ -I api/ api/hello.proto -I vendor/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I vendor/github.com/grpc-ecosystem/grpc-gateway --grpc-gateway_out=logtostderr=true:api
 ```
 
 * swagger output
 ```
-protoc -I /usr/local/include/ -I api/ api/hello.proto -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway --swagger_out=logtostderr=true:swagger
+protoc -I /usr/local/include/ -I api/ api/hello.proto -I vendor/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I vendor/github.com/grpc-ecosystem/grpc-gateway --swagger_out=logtostderr=true:swagger
 ```
 
 ## Example API calls

@@ -45,7 +45,11 @@ func main() {
 	var err error
 	log.Print("starting server")
 
-	c.InitEnvVars()
+	err = c.InitEnvVars()
+	if err != nil {
+		log.Fatalf("failed to init config vars: %s", err)
+	}
+
 	port, knockFailure, address := c.ParseEnvVars()
 
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", address, port))
