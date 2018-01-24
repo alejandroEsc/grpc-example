@@ -25,35 +25,27 @@ func InitEnvVars() error {
 	var err error
 	viper.SetEnvPrefix(envPrefix)
 
-	err = viper.BindEnv(envServicePort)
-	if err != nil {
+	if err = viper.BindEnv(envServicePort); err != nil {
 		return err
 	}
 
-	err = viper.BindEnv(envServiceKnockFailure)
-	if err != nil {
+	if err = viper.BindEnv(envServiceKnockFailure); err != nil {
 		return err
 	}
 
-	err = viper.BindEnv(envServiceAddress)
-	if err != nil {
+	if err = viper.BindEnv(envServiceAddress); err != nil {
 		return err
 	}
 
-	err = viper.BindEnv(envGateWayServiceAddress)
-	if err != nil {
+	if err = viper.BindEnv(envGateWayServiceAddress); err != nil {
 		return err
 	}
 
-	err = viper.BindEnv(envGateWayPort)
-	if err != nil {
+	if err = viper.BindEnv(envGateWayPort); err != nil {
 		return err
 	}
 
 	err = viper.BindEnv(envGateWaySwaggerDir)
-	if err != nil {
-		return err
-	}
 
 	return err
 }

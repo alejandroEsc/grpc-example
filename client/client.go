@@ -51,9 +51,7 @@ func runNoMessage(client a.HelloServiceClient) error {
 }
 
 func main() {
-	var err error
-	err = c.InitEnvVars()
-	if err != nil {
+	if err := c.InitEnvVars(); err != nil {
 		log.Fatalf("failed to init config vars: %s", err)
 	}
 
