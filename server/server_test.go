@@ -26,6 +26,4 @@ func TestGetHello(t *testing.T) {
 	if resp.ReplyMessage != repMsg {
 		t.Errorf("got an unexpected reply: %s %s %s", resp.ReplyMessage, "intead of ", repMsg)
 	}
-
-	t.Errorf("got an unexpected reply: %s %s %s", resp.ReplyMessage, "intead of ", repMsg)
 }
