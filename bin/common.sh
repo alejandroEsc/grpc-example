@@ -26,7 +26,7 @@ packages() {
 }
 
 valid_go_files() {
-  git ls-files "**/*.go" "*.go" | grep -v -e "vendor"
+  git ls-files "**/*.go" "*.go" | grep -v -e "vendor" -e "api"
 }
 
 
