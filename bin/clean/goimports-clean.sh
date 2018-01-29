@@ -11,19 +11,17 @@ set -o nounset
 set -o pipefail
 
 ROOT=$(dirname "${BASH_SOURCE}")/../..
+source "${ROOT}/bin/common.sh"
 
 cd "${ROOT}"
 
-gofmt=$(which gofmt)
-if [[ ! -x "${gofmt}" ]]; then
-  echo "could not find gofmt, please verify your GOPATH"
+goimports=$(which goimports)
+if [[ ! -x "${goimports}" ]]; then
+  echo "could not find goimports, please verify your GOPATH"
   exit 1
 fi
 
-source "${ROOT}/bin/common.sh"
-
-echo $(valid_go_files)
 for file in $(valid_go_files); do
-    inf "${gofmt} -s -w $file"
-    ${gofmt} -s -w $file
+    inf "${goimports} -w $file"
+    ${goimports} -w $file
 done
