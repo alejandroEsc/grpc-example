@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Some useful colors.
 declare -r color_start="\033["
